@@ -23,6 +23,11 @@ Caso o seu computador apresente erro ao ativar o ambiente virtual, abra o Window
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
+Instale o SQLalchemy 
+```python
+pip install sqlalchemy
+```
+
 
 
 
