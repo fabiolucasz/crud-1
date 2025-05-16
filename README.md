@@ -20,7 +20,7 @@ Ative o ambiente virtual
 
 Caso o seu computador apresente erro ao ativar o ambiente virtual, abra o Windows powershell como administrador e execute esta linha:
 ```sh
-Set-
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
 
