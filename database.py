@@ -21,17 +21,29 @@ session = Session()
 
 #adicionar usario
 def adicionar_usuario():
-    novo_aluno = Aluno(nome="Alice", idade=50)
-    session.add(novo_aluno)
-    session.commit()
+    nome = entry_nome.get()
+    idade = entry_idade.get()
+
+    if nome and idade:
+        novo_aluno = Aluno(nome=nome, idade=idade)
+        session.add(novo_aluno)
+        session.commit()
+        listar_alunos()
 
 
 def alterar_dados():
-    aluno = session.query(Aluno).filter(Aluno.nome == "Alice").first()
+    selecionado = lista.curselection()
+    novo_nome = entry_nome.get()
+    nova_idade = entry_idade.get()
 
-    if aluno:
-        aluno.idade = 18
+
+    if selecionado and novo_nome and nova_idade:
+        aluno_id = int(lista.get(selecionado).split(" | ")[0])
+        aluno = session.query(Aluno).filter_by(id = aluno_id).first()
+        aluno.nome = novo_nome
+        aluno.idade = nova_idade
         session.commit()
+        listar_alunos()
         print("Aluno atualizado com sucesso!")
     else:
         print("Aluno não encontrado.")
@@ -48,9 +60,10 @@ def excluir_aluno():
         print("Aluno não encontrado.")
 
 def listar_alunos():
+    lista.delete(0, tk.END)
     alunos = session.query(Aluno).all()
     for aluno in alunos:
-        print(f"ID: {aluno.id} | Nome: {aluno.nome} | Idade: {aluno.idade}")
+        lista.insert(tk.END, f"ID: {aluno.id} | Nome: {aluno.nome} | Idade: {aluno.idade}")
 
 #Criando a janela
 import tkinter as tk
@@ -74,4 +87,11 @@ btn_novo_aluno = tk.Button(janela, text="Adicionar",
                             command=adicionar_usuario)
 btn_novo_aluno.pack()
 
+#Lista de alunos
+lista = tk.Listbox(janela, width=50, height=15)
+lista.pack()
+
+btn_alterar = tk.Button(janela, text="Editar aluno", command=alterar_dados)
+btn_alterar.pack()
+listar_alunos()
 janela.mainloop()
